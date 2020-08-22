@@ -14,13 +14,20 @@
  * limitations under the License.
  */
 
-package geohashexample.service;
+package geohashexample.controller.dto;
 
-import geohashexample.model.City;
-import geohashexample.model.Realty;
-import java.util.function.BiConsumer;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import geohashexample.model.RealtyCluster;
+import geohashexample.model.RealtyPriceStatistics;
+import java.util.List;
+import java.util.Map;
+import lombok.Value;
 
-public interface RealtyDataProvider {
+@Value
+public class RealtyClusterResponse {
 
-  void getRealty(BiConsumer<City, Realty> consumer);
+  @JsonProperty("stats")
+  private final Map<Integer, RealtyPriceStatistics> priceStatistics;
+
+  private final List<RealtyCluster> realty;
 }

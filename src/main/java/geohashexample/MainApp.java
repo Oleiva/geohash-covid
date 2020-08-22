@@ -14,9 +14,17 @@
  * limitations under the License.
  */
 
-package geohashexample.service;
+package geohashexample;
 
-public interface ZoomToGeohashPrecisionConverter {
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 
-  int toGeohashPrecision(double zoom);
+@EnableCaching
+@SpringBootApplication
+public class MainApp {
+
+  public static void main(String[] args) {
+    SpringApplication.run(MainApp.class, args);
+  }
 }

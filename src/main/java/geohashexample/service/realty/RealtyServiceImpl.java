@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package geohashexample.service;
+package geohashexample.service.realty;
 
 import static java.util.stream.Collectors.toMap;
 
+import geohashexample.Variables;
 import geohashexample.model.City;
 import geohashexample.model.Realty;
 import geohashexample.model.RealtyCluster;
@@ -28,6 +29,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.LongAdder;
 import java.util.function.Function;
+
+import geohashexample.service.zoomToGeohash.ZoomToGeoHashPrecisionConverter;
+import geohashexample.service.zipImport.RealtyDataProvider;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.CacheEvict;
@@ -38,16 +42,14 @@ import org.springframework.transaction.annotation.Transactional;
 @Slf4j
 @RequiredArgsConstructor
 @Component
-public class RealtyService {
-
-  private static final String REALTY_PRICE_STDDEV_CACHE_NAME = "realty-price-stddev";
+public class RealtyServiceImpl implements RealtyService{
 
   private final RealtyDataProvider realtyDataProvider;
   private final CityRepository cityRepository;
   private final RealtyRepository realtyRepository;
-  private final ZoomToGeohashPrecisionConverter zoomToGeohashPrecisionConverter;
+  private final ZoomToGeoHashPrecisionConverter zoomToGeohashPrecisionConverter;
 
-  @CacheEvict(REALTY_PRICE_STDDEV_CACHE_NAME)
+  @CacheEvict(Variables.REALTY_PRICE_STDDEV_CACHE_NAME)
   @Transactional
   public void reimportRealty() {
     log.info("Starting realty reimport...");
@@ -75,12 +77,12 @@ public class RealtyService {
   public List<RealtyCluster> findRealtyClustersWithinBounds(
       double southWestLat, double southWestLon, double northEastLat, double northEastLon,
       double zoom) {
-    int precision = zoomToGeohashPrecisionConverter.toGeohashPrecision(zoom);
+    int precision = zoomToGeohashPrecisionConverter.toGeoHashPrecision(zoom);
     return realtyRepository.findRealtyClustersWithinBounds(
         southWestLat, southWestLon, northEastLat, northEastLon, precision);
   }
 
-  @Cacheable(REALTY_PRICE_STDDEV_CACHE_NAME)
+  @Cacheable(Variables.REALTY_PRICE_STDDEV_CACHE_NAME)
   public Map<Integer, RealtyPriceStatistics> findAllRealtyPriceStatistics() {
     return realtyRepository.findAllRealtyPriceStatistics()
         .stream()

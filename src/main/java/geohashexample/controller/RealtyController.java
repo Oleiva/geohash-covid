@@ -19,8 +19,9 @@ package geohashexample.controller;
 import static java.util.stream.Collectors.toMap;
 import static java.util.stream.Collectors.toSet;
 
+import geohashexample.controller.dto.RealtyClusterResponse;
 import geohashexample.model.RealtyCluster;
-import geohashexample.service.RealtyService;
+import geohashexample.service.realty.RealtyServiceImpl;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -33,7 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/realty")
 public class RealtyController {
 
-  private final RealtyService realtyService;
+  private final RealtyServiceImpl realtyServiceImpl;
 
   @GetMapping
   public RealtyClusterResponse findRealtyClustersWithinBounds(
@@ -42,14 +43,14 @@ public class RealtyController {
       @RequestParam("ne_lat") double northEastLat,
       @RequestParam("ne_lng") double northEastLon,
       @RequestParam("zoom") double zoom) {
-    var realty = realtyService.findRealtyClustersWithinBounds(
+    var realty = realtyServiceImpl.findRealtyClustersWithinBounds(
         southWestLat, southWestLon, northEastLat, northEastLon, zoom);
 
     var cityIds = realty.stream()
         .map(RealtyCluster::getCityId)
         .collect(toSet());
 
-    var allRealtyPriceStatistics = realtyService.findAllRealtyPriceStatistics();
+    var allRealtyPriceStatistics = realtyServiceImpl.findAllRealtyPriceStatistics();
 
     var filteredRealtyPriceStatistics = allRealtyPriceStatistics.entrySet()
         .stream()

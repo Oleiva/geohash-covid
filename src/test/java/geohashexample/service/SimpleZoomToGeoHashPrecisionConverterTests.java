@@ -20,17 +20,19 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
 
 import java.util.stream.Stream;
+
+import geohashexample.service.zoomToGeohash.ZoomToGeoHashPrecisionConverterImpl;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-public class SimpleZoomToGeohashPrecisionConverterTests {
+public class SimpleZoomToGeoHashPrecisionConverterTests {
 
   @ParameterizedTest
   @MethodSource("zoomAndPrecisionProvider")
   void test(double zoom, int precision) {
-    var converter = new SimpleZoomToGeohashPrecisionConverter();
-    assertThat(precision).isEqualTo(converter.toGeohashPrecision(zoom));
+    var converter = new ZoomToGeoHashPrecisionConverterImpl();
+    assertThat(precision).isEqualTo(converter.toGeoHashPrecision(zoom));
   }
 
   static Stream<Arguments> zoomAndPrecisionProvider() {

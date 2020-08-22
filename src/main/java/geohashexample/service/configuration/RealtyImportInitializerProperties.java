@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package geohashexample.service;
+package geohashexample.service.configuration;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

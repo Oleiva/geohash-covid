@@ -14,25 +14,29 @@
  * limitations under the License.
  */
 
-package geohashexample.service;
+package geohashexample.service.configuration;
 
-import java.util.Map;
+import javax.annotation.PostConstruct;
+
+import geohashexample.service.realty.RealtyServiceImpl;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+@Slf4j
+@RequiredArgsConstructor
 @Component
-public class SimpleZoomToGeohashPrecisionConverter implements ZoomToGeohashPrecisionConverter {
+public class RealtyImportInitializer {
 
-  private static final int FIRST_ZOOM = 4;
-  private static final int LAST_ZOOM = 22;
+  private final RealtyImportInitializerProperties properties;
+  private final RealtyServiceImpl realtyServiceImpl;
 
-  @Override
-  public int toGeohashPrecision(double zoom) {
-    int intZoom = (int) zoom;
-    if (intZoom < FIRST_ZOOM) {
-      intZoom = FIRST_ZOOM;
-    } else if (intZoom > LAST_ZOOM) {
-      intZoom = LAST_ZOOM;
+  @PostConstruct
+  public void init() {
+    if (properties.isEnabled()) {
+      realtyServiceImpl.reimportRealty();
+    } else {
+      log.info("Skipping realty reimport");
     }
-    return intZoom / 2 - 1;
   }
 }

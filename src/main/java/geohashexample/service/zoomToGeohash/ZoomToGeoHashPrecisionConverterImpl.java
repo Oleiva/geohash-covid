@@ -14,20 +14,22 @@
  * limitations under the License.
  */
 
-package geohashexample.controller;
+package geohashexample.service.zoomToGeohash;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import geohashexample.model.RealtyCluster;
-import geohashexample.model.RealtyPriceStatistics;
-import java.util.List;
-import java.util.Map;
-import lombok.Value;
+import geohashexample.Variables;
+import org.springframework.stereotype.Component;
 
-@Value
-public class RealtyClusterResponse {
+@Component
+public class ZoomToGeoHashPrecisionConverterImpl implements ZoomToGeoHashPrecisionConverter {
 
-  @JsonProperty("stats")
-  private final Map<Integer, RealtyPriceStatistics> priceStatistics;
-
-  private final List<RealtyCluster> realty;
+  @Override
+  public int toGeoHashPrecision(double zoom) {
+    int intZoom = (int) zoom;
+    if (intZoom < Variables.getFirstZoom()) {
+      intZoom = Variables.getFirstZoom();
+    } else if (intZoom > Variables.getLastZoom()) {
+      intZoom = Variables.getLastZoom();
+    }
+    return intZoom / 2 - 1;
+  }
 }

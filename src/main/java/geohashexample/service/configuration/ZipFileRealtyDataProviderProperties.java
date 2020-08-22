@@ -14,17 +14,17 @@
  * limitations under the License.
  */
 
-package geohashexample;
+package geohashexample.service.configuration;
 
-import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cache.annotation.EnableCaching;
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
 
-@EnableCaching
-@SpringBootApplication
-public class GeohashExampleApplication {
+@Data
+@Component
+@ConfigurationProperties("realty-data-import.zip-file")
+public class ZipFileRealtyDataProviderProperties {
 
-  public static void main(String[] args) {
-    SpringApplication.run(GeohashExampleApplication.class, args);
-  }
+  private String location;
+  private String entryName;
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package geohashexample.service;
+package geohashexample.service.zipImport;
 
 import geohashexample.model.City;
 import geohashexample.model.Coordinates;
@@ -24,6 +24,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 import java.util.function.BiConsumer;
 import java.util.zip.ZipFile;
+
+import geohashexample.service.configuration.ZipFileRealtyDataProviderProperties;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;

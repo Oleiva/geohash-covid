@@ -14,17 +14,13 @@
  * limitations under the License.
  */
 
-package geohashexample.service;
+package geohashexample.service.zipImport;
 
-import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
+import geohashexample.model.City;
+import geohashexample.model.Realty;
+import java.util.function.BiConsumer;
 
-@Data
-@Component
-@ConfigurationProperties("realty-data-import.zip-file")
-public class ZipFileRealtyDataProviderProperties {
+public interface RealtyDataProvider {
 
-  private String location;
-  private String entryName;
+  void getRealty(BiConsumer<City, Realty> consumer);
 }
